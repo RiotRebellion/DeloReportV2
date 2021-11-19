@@ -1,0 +1,35 @@
+﻿<Window x:Class="Views.Windows.PersonListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ViewModels"
+        xmlns:vw="clr-namespace-Views.Windows"
+        mc:Ignorable="d"
+        Title="PersonListWindow" Height="450" Width="600">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/PersonListStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:PersonListViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <ListView DockPanel.Dock="Top" Margin="5" Height="auto" ItemsSource="{Binding Departments}" DisplayMemberPath="Name">
+
+        </ListView>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button/>
+            <Button/>
+            <Button/>
+            <Button/>
+            <Button/>
+        </StackPanel>
+        <ListView DockPanel.Dock="Bottom" Margin="5" Height="auto" ItemsSource="{Binding Departments}">
+
+        </ListView>
+    </DockPanel>
+</Window>
