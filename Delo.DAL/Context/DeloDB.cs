@@ -14,7 +14,7 @@ namespace Delo.DAL.Context
 
         public DbSet<Person> Persons { get; set; }
 
-        public DeloDB(DbContextOptions options) : base(options)
+        public DeloDB(DbContextOptions<DeloDB> options) : base(options)
         {
 
         }

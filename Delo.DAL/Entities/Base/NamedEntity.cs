@@ -7,4 +7,5 @@ namespace Delo.DAL.Entities.Base
         [Required]
         public string Name { get; set; }
     }
+
 }

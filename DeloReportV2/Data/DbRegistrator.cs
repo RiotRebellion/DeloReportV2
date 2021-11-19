@@ -24,7 +24,10 @@ namespace DeloReportV2.Data
                     //case "MSSQL":
                     //    opt.UseSqlServer(Configuration.GetConnectionString(type));
                     //    break;
-                    case "SQLite":
+                    case "MSSQL":
+                        opt.UseSqlServer(Configuration.GetConnectionString(type));
+                        break;
+                    case "SqLite":
                         opt.UseSqlite(Configuration.GetConnectionString(type));
                         break;
                     case "InMemory":
