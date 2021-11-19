@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Infrastructure\Extentions\" />
     <Folder Include="Services\Base\" />
   </ItemGroup>
 

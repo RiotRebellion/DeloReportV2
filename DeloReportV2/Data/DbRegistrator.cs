@@ -34,7 +34,8 @@ namespace DeloReportV2.Data
                         opt.UseInMemoryDatabase("test");
                         break;
                 }
-            })            
+            })
+            .AddTransient<DbInitializer>()
         ;
     }
 }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using ViewModels;
 using Services;
@@ -38,6 +33,9 @@ namespace DeloReportV2
         protected override async void OnStartup(StartupEventArgs e)
         {
             var host = Host;
+            using (var scope = Services.CreateScope())
+                await scope.ServiceProvider.GetRequiredService<DbInitializer>().InitializeAsync();
+
             base.OnStartup(e);
             await Host.StartAsync();
         }
