@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ViewModels;
 using Services;
+using DeloReportV2.Data;
 
 namespace DeloReportV2
 {
@@ -29,6 +30,7 @@ namespace DeloReportV2
             .ConfigureServices(App.ConfigureServices);
 
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services) => services
+            .AddDatabase(host.Configuration.GetSection("Database"))
             .AddViewModels()
             .AddServices()
         ;
