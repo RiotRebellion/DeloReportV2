@@ -1,4 +1,5 @@
-﻿using Delo.DAL.Context;
+﻿using Delo.DAL;
+using Delo.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,7 @@ namespace DeloReportV2.Data
                 }
             })
             .AddTransient<DbInitializer>()
+            .AddRepositories()
         ;
     }
 }
