@@ -17,10 +17,7 @@ namespace ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
-        #region Repository
         private readonly IRepository<Person> _PersonRepository;
-
-        #endregion
 
         #region Title
         private string _Title = "Отчёты СЭД ДЕЛО";
@@ -35,6 +32,7 @@ namespace ViewModels
 
         #region Status
         private readonly string _Status = "Нет подключения";
+
         public string Status
         {
             get => _Status;
@@ -59,19 +57,20 @@ namespace ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IRepository<Person> PersonRepository)
         {
             #region Commands
 
             OpenPersonWindowCommand = new RelayCommand(OnOpenPersonsWindowCommandExecute, CanOpenPersonWindowCommandExecuted);
 
-
             #endregion
 
             #region PersonRepository
 
-            //_PersonRepository = PersonRepository;
 
+            _PersonRepository = PersonRepository;
+
+            var persons = _PersonRepository.Items.Take(10).ToArray();
 
             #endregion
         }
