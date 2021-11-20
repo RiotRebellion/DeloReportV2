@@ -23,17 +23,6 @@ namespace ViewModels
 
         #endregion
 
-        #region Title
-        private string _Title = "Отчёты СЭД ДЕЛО";
-
-        public string Title
-        {
-            get => _Title;
-            set => Set(ref _Title, value);
-        }
-
-        #endregion
-
         #region Status
         private string _Status;
 
