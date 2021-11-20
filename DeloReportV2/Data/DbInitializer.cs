@@ -24,9 +24,9 @@ namespace DeloReportV2.Data
         {
             var timer = Stopwatch.StartNew();
 
-            await _db.Database.EnsureDeletedAsync();
+            await _db.Database.EnsureDeletedAsync().ConfigureAwait(false);
             _logger.LogInformation("Инициализация БД...");
-            await _db.Database.MigrateAsync();
+            await _db.Database.MigrateAsync().ConfigureAwait(false);
 
             _logger.LogInformation("проверка наличия БД...");
             if (await _db.Persons.AnyAsync()) return;
@@ -46,7 +46,9 @@ namespace DeloReportV2.Data
             _logger.LogInformation("Инициализация таблицы Departments...");
 
             _Departments = Enumerable.Range(1, _DepartmentsCount)
-                .Select(i => new Department { Id = i++, Name = $"Отдел {i}" })
+                .Select(i => new Department {
+                    Name = $"Отдел {i}" 
+                })
                 .ToArray();
 
             await _db.Departments.AddRangeAsync(_Departments);
@@ -67,9 +69,8 @@ namespace DeloReportV2.Data
             _Persons = Enumerable.Range(1, _PeopleCount)
                 .Select(i => new Person
                 {
-                    Id = i,
                     Name = $"Работник {i + 1}",
-                    Position = "Должность {i + 1}",
+                    Position = $"Должность {i + 1}",
                     Department = rnd.NextItem(_Departments)
                 })
                 .ToArray();

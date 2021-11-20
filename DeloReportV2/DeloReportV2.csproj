@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\Extentions\" />
+    <Folder Include="Models\" />
     <Folder Include="Services\Base\" />
   </ItemGroup>
 

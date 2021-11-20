@@ -12,6 +12,6 @@ namespace Delo.DAL.Entities.Base
     public abstract class Entity : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
     }
 }

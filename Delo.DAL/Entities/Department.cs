@@ -1,4 +1,5 @@
 ﻿using Delo.DAL.Entities.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
