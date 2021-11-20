@@ -33,6 +33,10 @@ namespace DeloReportV2
         protected override async void OnStartup(StartupEventArgs e)
         {
             var host = Host;
+            //Инициализатор БД
+            //using (var scope = Services.CreateScope())
+            //    await scope.ServiceProvider.GetRequiredService<DbInitializer>().InitializeAsync();
+
             base.OnStartup(e);
             await Host.StartAsync();
         }

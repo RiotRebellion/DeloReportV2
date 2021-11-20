@@ -36,6 +36,8 @@ namespace DeloReportV2.Data
                         break;
                 }
             })
+            //Инициализатор БД
+            //.AddTransient<DbInitializer>()
             .AddRepositories()
         ;
     }
