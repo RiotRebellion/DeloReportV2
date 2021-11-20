@@ -78,15 +78,15 @@ namespace ViewModels
 
             #region ConnectionCheck
 
-            (CanExecute, Status) = ConnectionCheck(PersonRepository);
+            (_CanExecute, Status) = ConnectionCheck(PersonRepository);
 
             #endregion
 
 
         }
 
-        private (bool, string) ConnectionCheck(IRepository<Person> _PersonRepository) => _PersonRepository.IsNotNull()
+        private (bool, string) ConnectionCheck(IRepository<Person> repository) => repository.CanConnect<Person>()
             ? (true, "Подключено")
-            : (false, "Нет подключения");
+            : (false, "Не подключено");
     }
 }

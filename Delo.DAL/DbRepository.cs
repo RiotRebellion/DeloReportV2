@@ -16,14 +16,19 @@ namespace Delo.DAL
     {
         private readonly DeloDB _Db;
         private readonly DbSet<T> _Set;
+        private readonly bool _ConnectionState;
 
         public DbRepository(DeloDB Db)
         {
             _Db = Db;
-            _Set = Db.Set<T>();  
+            _Set = Db.Set<T>();
+            _ConnectionState = Db.Database.CanConnect();
         }
 
         public virtual IQueryable<T> Items => _Set;
+
+        public bool CanConnect<T>() => _ConnectionState;
+
 
         public T Get(int id) => Items.SingleOrDefault(items => items.Id == id);
 

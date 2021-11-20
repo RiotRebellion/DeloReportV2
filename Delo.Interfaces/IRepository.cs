@@ -11,5 +11,7 @@ namespace Delo.Interfaces
         T Get(int id);
 
         Task<T> GetAsync(int id, CancellationToken cancel = default);
+
+        bool CanConnect<T>();
     }
 }
