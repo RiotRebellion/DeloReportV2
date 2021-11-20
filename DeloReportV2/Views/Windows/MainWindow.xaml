@@ -7,7 +7,7 @@
     xmlns:vw="clr-namespace:Views.Windows"
     xmlns:vm="clr-namespace:ViewModels"
     Title="{Binding Title}"
-    DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
+    DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
     MinWidth="800"
     MinHeight="450"
     MaxWidth="800"

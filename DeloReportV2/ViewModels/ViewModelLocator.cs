@@ -11,6 +11,7 @@ namespace ViewModels
 {
     public class ViewModelLocator : ViewModel
     {
-        public MainWindowViewModel MainWindowModel => App.Services.GetRequiredService<MainWindowViewModel>();
+        public MainWindowViewModel MainWindowViewModel => App.Services.GetRequiredService<MainWindowViewModel>();
+        public PersonListViewModel PersonListViewModel => App.Services.GetRequiredService<PersonListViewModel>();
     }
 }
