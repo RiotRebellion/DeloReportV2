@@ -19,9 +19,9 @@ namespace ViewModels
 
         #region ChoosenPersons
 
-        private ObservableCollection<Object> _ChoosenPersons = new ObservableCollection<Object>();
+        private ObservableCollection<Person> _ChoosenPersons = new ObservableCollection<Person>();
 
-        public ObservableCollection<Object> ChoosenPersons
+        public ObservableCollection<Person> ChoosenPersons
         {
             get => _ChoosenPersons;
             set => Set(ref _ChoosenPersons, value);
@@ -31,9 +31,9 @@ namespace ViewModels
 
         #region SelectedPersons
 
-        private ObservableCollection<Object> _SelectedPersons = new ObservableCollection<object>();
+        private ObservableCollection<Person> _SelectedPersons = new ObservableCollection<Person>();
 
-        public ObservableCollection<Object> SelectedPersons
+        public ObservableCollection<Person> SelectedPersons
         {
             get => _SelectedPersons;
             set => Set(ref _SelectedPersons, value);
@@ -43,7 +43,7 @@ namespace ViewModels
 
 
 
-        public IEnumerable<Person> Persons => _PersonRepository.Items;
+        public ObservableCollection<Person> Persons => new ObservableCollection<Person>(_PersonRepository.Items.ToList<Person>());
 
         #region Commands
 
