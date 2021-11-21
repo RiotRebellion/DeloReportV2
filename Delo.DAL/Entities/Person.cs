@@ -6,5 +6,10 @@ namespace Delo.DAL.Entities
     {
         public virtual Department Department { get; set; }
         public virtual string Position { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} - {Position}";
+        }
     }
 }

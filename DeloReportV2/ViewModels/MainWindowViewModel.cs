@@ -38,6 +38,18 @@ namespace ViewModels
 
         #region Commands
 
+        #region RemovePerson
+
+        public ICommand DeletePersonCommand;
+
+        private bool CanDeletePersonCommandExecute(object p) => true;
+
+        private void OnDeletePersonCommandExecuted(object p)
+        {
+
+        }
+
+        #endregion
 
         #endregion
 
@@ -45,7 +57,7 @@ namespace ViewModels
         {
             #region Commands
 
-            
+            DeletePersonCommand = new RelayCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommandExecute);
 
             #endregion
 
@@ -54,7 +66,6 @@ namespace ViewModels
             Status = ConnectionCheck(PersonRepository);
 
             #endregion
-
 
         }
 
