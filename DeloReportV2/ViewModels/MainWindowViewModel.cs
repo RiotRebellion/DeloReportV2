@@ -5,9 +5,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Delo.DAL.Entities;
 using Delo.Interfaces;
+using DeloReportV2;
+using DeloReportV2.Views.Windows;
 using Infrastructure;
 using Infrastructure.Commands;
 using ViewModels.Base;
@@ -35,25 +38,6 @@ namespace ViewModels
 
         #region Commands
 
-        #region OpenPersonWindowCommand
-
-        private bool _CanExecute;
-
-        public bool CanExecute
-        {
-            get => _CanExecute;
-            set => Set(ref _CanExecute, value);
-        }
-        public ICommand OpenPersonWindowCommand { get; }
-
-        private bool CanOpenPersonWindowCommandExecuted(object p) => CanExecute;
-
-        private void OnOpenPersonsWindowCommandExecute(object p)
-        {
-
-        }
-
-        #endregion 
 
         #endregion
 
@@ -61,21 +45,21 @@ namespace ViewModels
         {
             #region Commands
 
-            OpenPersonWindowCommand = new RelayCommand(OnOpenPersonsWindowCommandExecute, CanOpenPersonWindowCommandExecuted);
+            
 
             #endregion
 
             #region ConnectionCheck
 
-            (_CanExecute, Status) = ConnectionCheck(PersonRepository);
+            Status = ConnectionCheck(PersonRepository);
 
             #endregion
 
 
         }
 
-        private (bool, string) ConnectionCheck(IRepository<Person> repository) => repository.CanConnect<Person>()
-            ? (true, "Подключено")
-            : (false, "Не подключено");
+        private string ConnectionCheck(IRepository<Person> repository) => repository.CanConnect<Person>()
+            ? "Подключено"
+            : "Не подключено";
     }
 }

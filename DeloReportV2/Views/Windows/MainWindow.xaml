@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cmd="clr-namespace:DeloReportV2.Infrastructure.Commands"
     xmlns:vw="clr-namespace:Views.Windows"
     xmlns:vm="clr-namespace:ViewModels"
     Title="Отчёты СЭД ДЕЛО"
@@ -31,7 +32,11 @@
         </ListBox>
         <StackPanel Width="480" DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Создать список ДЛ" Command="{Binding OpenPersonWindowCommand}"/>
+                <Button Content="Создать список ДЛ">
+                    <Button.Command>
+                        <cmd:PersonListCommand/>
+                    </Button.Command>
+                </Button>
                 <Button Content="Редактировать список ДЛ"/>
             </StackPanel>
             <Button Width="460" Content="Сформировать отчёт"/>
