@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ViewModels.Base;
 
@@ -17,62 +18,102 @@ namespace ViewModels
     {
         private readonly IRepository<Person> _PersonRepository;
 
+        #region DependencyProperties
+
+        #region PersonCollectionProperty
+
+        public static readonly DependencyProperty PersonCollectionProperty =
+            DependencyProperty.Register(
+            nameof(PersonCollection),
+            typeof(ObservableCollection<Person>),
+            typeof(Window),
+            new PropertyMetadata(default(ObservableCollection<Person>)));
+
+        #endregion
+
+        #region ChoosenDependencyProperty
+
+        public static readonly DependencyProperty ChoosenPersonsCollectionProperty =
+            DependencyProperty.Register(
+                nameof(ChoosenPersonsCollection),
+                typeof(ObservableCollection<Person>),
+                typeof(Window),
+                new PropertyMetadata(default(ObservableCollection<Person>)));
+
+        #endregion
+
+        #endregion
+
+        #region Properties
+
+        #region PersonCollection
+
+        public ObservableCollection<Person> PersonCollection => new ObservableCollection<Person>();
+
+        #endregion
+
         #region ChoosenPersons
 
-        private ObservableCollection<Person> _ChoosenPersons = new ObservableCollection<Person>();
+        private ObservableCollection<Person> _ChoosenPersonsCollection = new ObservableCollection<Person>();
 
-        public ObservableCollection<Person> ChoosenPersons
+        public ObservableCollection<Person> ChoosenPersonsCollection
         {
-            get => _ChoosenPersons;
-            set => Set(ref _ChoosenPersons, value);
+            get => _ChoosenPersonsCollection;
+            set => Set(ref _ChoosenPersonsCollection, value);
         }
 
         #endregion
 
         #region SelectedPersons
 
-        private ObservableCollection<Person> _SelectedPersons = new ObservableCollection<Person>();
+        public Person SelectedPerson { get; set; }
 
-        public ObservableCollection<Person> SelectedPersons
+        #endregion
+
+        #region ChoosenSelectedPerson
+
+        private Person _SelectedChoosenPerson;
+
+        public Person SelectedChoosenPerson
         {
-            get => _SelectedPersons;
-            set => Set(ref _SelectedPersons, value);
+            get => _SelectedChoosenPerson;
+            set => Set(ref _SelectedChoosenPerson, value);
         }
 
         #endregion
 
-
-
-        public ObservableCollection<Person> Persons => new ObservableCollection<Person>(_PersonRepository.Items);
+        #endregion
 
         #region Commands
 
         #region AddPerson
-        public ICommand AddPersonCommand;
+        public ICommand AddPersonCommand { get; }
 
-        private bool CanAddPersonCommandExecute(object p) => SelectedPersons.IsNullOrEmpty();
+        private bool CanAddPersonCommandExecute(object p) => !PersonCollection.IsNullOrEmpty();
 
         private void OnAddPersonCommandExecuted(object p)
         {
-            ChoosenPersons.AddItems(SelectedPersons);
+            if (ChoosenPersons.Contains(SelectedPerson)) return;
+            ChoosenPersons.Add(SelectedPerson);
         }
 
         #endregion
 
         #region DeletePerson
 
-        public ICommand DeletePersonCommand;
+        public ICommand DeletePersonCommand { get; }
 
-        private bool CanDeletePersonCommandExecute(object p) => ChoosenPersons.IsNullOrEmpty();
+        private bool CanDeletePersonCommandExecute(object p) => !ChoosenPersons.IsNullOrEmpty();
 
         private void OnDeletePersonCommandExecuted(object p)
         {
-            SelectedPersons.RemoveItems(ChoosenPersons);
+            ChoosenPersons.Remove(SelectedChoosenPerson);
         }
 
         #endregion
 
         #endregion
+
         public PersonListViewModel(IRepository<Person> PersonRepository)
         {
             _PersonRepository = PersonRepository;

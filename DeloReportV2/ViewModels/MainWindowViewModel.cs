@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Delo.DAL.Entities;
+﻿using Delo.DAL.Entities;
 using Delo.Interfaces;
-using DeloReportV2;
-using DeloReportV2.Views.Windows;
-using Infrastructure;
 using Infrastructure.Commands;
+using Infrastructure.Commands.Base;
+using System.Windows.Input;
 using ViewModels.Base;
 
 
@@ -20,9 +10,15 @@ namespace ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
-        #region Repositories
+        #region PersonRepository
 
-        private readonly IRepository<Person> _PersonRepository;
+        private IRepository<Person> _PersonRepository;
+
+        public IRepository<Person> PersonRepository
+        {
+            get => _PersonRepository;
+            set => Set(ref _PersonRepository, value);
+        }
 
         #endregion
 
@@ -38,13 +34,44 @@ namespace ViewModels
 
         #region Commands
 
-        #region RemovePerson
+        #region CloseApplicationCommand
 
-        public ICommand DeletePersonCommand;
+        public ICommand CloseApplication { get; }
 
-        private bool CanDeletePersonCommandExecute(object p) => true;
+        private bool CanCloseApplicationCommandExecute(object p) => true;
 
-        private void OnDeletePersonCommandExecuted(object p)
+        private void OnCloseApplicationCommandExecuted(object p)
+        {
+            
+        }
+
+        #endregion
+
+        #region CreatePersonList
+
+        public ICommand CreatePersonList { get; }
+
+        private bool CanCreatePersonListExecute(object p) => true;
+        
+        private void OnCreatePersonListExecuted(object p)
+        {
+            var Persons = (IRepository<Person>)p;
+
+            var dialog = new PersonListViewModel
+            {
+
+            };
+        }
+
+        #endregion
+
+        #region EditPersonList
+
+        public ICommand EditPersonList { get; }
+
+        private bool CanEditPersonListExecute(object p) => true;
+
+        private void OnEditPersonListExecuted(object p)
         {
 
         }
@@ -57,7 +84,9 @@ namespace ViewModels
         {
             #region Commands
 
-            DeletePersonCommand = new RelayCommand(OnDeletePersonCommandExecuted, CanDeletePersonCommandExecute);
+            CloseApplication = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
+            CreatePersonList = new RelayCommand(OnCreatePersonListExecuted, CanCreatePersonListExecute);
+            EditPersonList = new RelayCommand(OnEditPersonListExecuted, CanEditPersonListExecute);
 
             #endregion
 

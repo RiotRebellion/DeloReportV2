@@ -23,7 +23,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Программа">
                 <MenuItem Header="Настройки"/>
-                <MenuItem Header="Выход"/>
+                <MenuItem Header="Выход" Command="{Binding OnCloseApplication}"/>
             </MenuItem>
         </Menu>
         <ComboBox DockPanel.Dock="Top" Margin="5,25,5,5" MaxHeight="25pt"></ComboBox>

@@ -34,7 +34,7 @@ namespace Delo.DAL
     internal class PersonRepository : DbRepository<Person>
     {
         private string query =
-                      "SELECT E.DUE AS Id, D.CLASSIF_NAME AS Department, E.CLASSIF_NAME as Name, E.DUTY as Duty " +
+                      "SELECT E.DUE AS Id, D.CLASSIF_NAME AS Department, E.SURNAME as Name, E.DUTY as Duty " +
                       "FROM DEPARTMENT E " +
                       "JOIN DEPARTMENT D ON D.DUE = E.DEPARTMENT_DUE " +
                       "where " +
