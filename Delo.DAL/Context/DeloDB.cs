@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace Delo.DAL.Context
 {
     public class DeloDB : DbContext
-    {
-        public DbSet<Department> Departments { get; set; }
+    { 
 
         public DbSet<Person> Persons { get; set; }
 

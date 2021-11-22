@@ -43,7 +43,7 @@ namespace ViewModels
 
 
 
-        public ObservableCollection<Person> Persons => new ObservableCollection<Person>(_PersonRepository.Items.ToList<Person>());
+        public ObservableCollection<Person> Persons => new ObservableCollection<Person>(_PersonRepository.Items);
 
         #region Commands
 

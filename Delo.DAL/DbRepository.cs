@@ -14,7 +14,7 @@ namespace Delo.DAL
 {
     internal class DbRepository<T> : IRepository<T> where T : Entity, new()
     {
-        private readonly DeloDB _Db;
+        protected readonly DeloDB _Db;
         private readonly DbSet<T> _Set;
         private readonly bool _ConnectionState;
 
@@ -29,19 +29,20 @@ namespace Delo.DAL
 
         public bool CanConnect<T>() => _ConnectionState;
 
-
-        public T Get(int id) => Items.SingleOrDefault(items => items.Id == id);
-
-        public async Task<T> GetAsync(int id, CancellationToken cancel = default) => await Items
-            .SingleOrDefaultAsync(items => items.Id == id, cancel)
-            .ConfigureAwait(false)
-            ;
-
     }
 
     internal class PersonRepository : DbRepository<Person>
     {
-        public override IQueryable<Person> Items => base.Items.Include(items => items.Department);
+        private string query =
+                      "SELECT E.DUE AS Id, D.CLASSIF_NAME AS Department, E.CLASSIF_NAME as Name, E.DUTY as Duty " +
+                      "FROM DEPARTMENT E " +
+                      "JOIN DEPARTMENT D ON D.DUE = E.DEPARTMENT_DUE " +
+                      "where " +
+                      "e.DELETED = 0 " +
+                      "and e.IS_NODE = 1 " +
+                      "order by Name";
+
+        public override IQueryable<Person> Items => base._Db.Persons.FromSqlRaw(query);
 
         public PersonRepository(DeloDB Db) : base(Db)
         {

@@ -9,10 +9,6 @@ namespace Delo.Interfaces
     {
         IQueryable<T> Items { get; }
 
-        T Get(int id);
-
-        Task<T> GetAsync(int id, CancellationToken cancel = default);
-
         bool CanConnect<T>();
     }
 }
