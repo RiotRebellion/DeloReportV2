@@ -15,7 +15,7 @@ namespace ReportTemplates.Templates
 
         public override void Outputing(ObservableCollection<Person> personCollection)
         {
-            
+            //TODO: Сделать функцию выгрузки в Excel
         }
 
         public override string ToString()

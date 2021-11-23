@@ -3,7 +3,7 @@ using System;
 
 namespace Infrastructure.Commands
 {
-    public class RelayCommand : Command
+    internal class RelayCommand : Command
     {
         private readonly Action<object> _Execute;
         private readonly Func<object, bool>? _CanExectute;

@@ -45,6 +45,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Delo.DAL\Delo.DAL.csproj" />
+    <ProjectReference Include="..\ReportTemplates\ReportTemplates.csproj" />
   </ItemGroup>
 
   <ItemGroup>

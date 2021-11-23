@@ -9,9 +9,8 @@ using ViewModels.Base;
 
 namespace ViewModels
 {
-    public class ViewModelLocator : ViewModel
+    internal class ViewModelLocator : ViewModel
     {
         public MainWindowViewModel MainWindowViewModel => App.Services.GetRequiredService<MainWindowViewModel>();
-        public PersonListViewModel PersonListViewModel => App.Services.GetRequiredService<PersonListViewModel>();
     }
 }

@@ -9,7 +9,8 @@
     xmlns:vm="clr-namespace:ViewModels"
     Title="Отчёты СЭД ДЕЛО"
     DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}"
-    Height="640" Width="480"
+    Height="640" 
+    Width="480"
     mc:Ignorable="d"
     ResizeMode="NoResize">
     <Window.Resources>
@@ -26,23 +27,35 @@
                 <MenuItem Header="Выход" Command="{Binding OnCloseApplication}"/>
             </MenuItem>
         </Menu>
-        <ComboBox DockPanel.Dock="Top" Margin="5,25,5,5" MaxHeight="25pt"></ComboBox>
-        <ListBox DockPanel.Dock="Top" Margin="5" Height="420">
-
-        </ListBox>
-        <StackPanel Width="480" DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Создать список ДЛ">
+        <ComboBox DockPanel.Dock="Top" 
+                  Margin="5,25,5,5" 
+                  MaxHeight="25pt"
+                  ItemsSource="{Binding Templates}"
+                  SelectedItem="{Binding SelectedTemplate}"/>
+        <ListBox DockPanel.Dock="Top" 
+                 Margin="5" Height="420" 
+                 ItemsSource="{Binding ChoosenPersonCollection}"/>
+        <StackPanel Width="480" 
+                    DockPanel.Dock="Top" 
+                    Orientation="Vertical" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                <Button Width="460" 
+                        Content="Формирование списка сотрудников">
                     <Button.Command>
                         <cmd:PersonListCommand/>
                     </Button.Command>
                 </Button>
-                <Button Content="Редактировать список ДЛ"/>
             </StackPanel>
-            <Button Width="460" Content="Сформировать отчёт"/>
+            <Button Width="460" 
+                    Content="Сформировать отчёт"
+                    Command="{Binding GetReportCommand}"/>
         </StackPanel>
-
-        <StatusBar DockPanel.Dock="Bottom" Height="20">
+        <StatusBar DockPanel.Dock="Bottom" 
+                   Height="20">
             <TextBlock Text="{Binding Status}"/>
         </StatusBar>
     </DockPanel>
