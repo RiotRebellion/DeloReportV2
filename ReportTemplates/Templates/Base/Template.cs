@@ -3,10 +3,16 @@ using System.Collections.ObjectModel;
 
 namespace ReportTemplates.Templates.Base
 {
-    public interface Template
+    public abstract class Template
     {   
         public string Name { get; set;}
 
-        public void Outputing(ObservableCollection<Person> personCollection);
+        public abstract void Outputing(ObservableCollection<Person> personCollection);
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
+
     }
 }

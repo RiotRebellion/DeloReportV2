@@ -13,9 +13,14 @@ namespace ReportTemplates.Templates
     {   
         public string Name { get; set; } = "Отчёт по поручениям";
 
-        public void Outputing(ObservableCollection<Person> personCollection)
+        public override void Outputing(ObservableCollection<Person> personCollection)
         {
             
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}";
         }
     }
 }
