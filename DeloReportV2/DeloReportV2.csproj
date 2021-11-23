@@ -8,16 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\Extentions\**" />
     <Compile Remove="Services\Base\**" />
+    <Compile Remove="Services\Interfaces\**" />
+    <EmbeddedResource Remove="Infrastructure\Extentions\**" />
     <EmbeddedResource Remove="Services\Base\**" />
+    <EmbeddedResource Remove="Services\Interfaces\**" />
+    <None Remove="Infrastructure\Extentions\**" />
     <None Remove="Services\Base\**" />
+    <None Remove="Services\Interfaces\**" />
+    <Page Remove="Infrastructure\Extentions\**" />
     <Page Remove="Services\Base\**" />
+    <Page Remove="Services\Interfaces\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Extentions\" />
     <Folder Include="Models\" />
-    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
