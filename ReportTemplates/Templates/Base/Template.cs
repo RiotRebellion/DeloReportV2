@@ -1,7 +1,7 @@
 ﻿using Delo.DAL.Entities;
 using System.Collections.ObjectModel;
 
-namespace ReportTemplates
+namespace ReportTemplates.Templates.Base
 {
     public interface Template
     {   
