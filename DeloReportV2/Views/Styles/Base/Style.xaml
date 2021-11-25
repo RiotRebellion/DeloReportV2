@@ -10,4 +10,9 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Padding" Value="5"/>
     </Style>
+    <Style TargetType="{x:Type DatePicker}">
+        <Setter Property="SelectedDateFormat" Value="Short"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Width" Value="150"/>
+    </Style> 
 </ResourceDictionary>

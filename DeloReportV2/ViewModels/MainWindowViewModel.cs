@@ -93,6 +93,30 @@ namespace ViewModels
         }
         #endregion
 
+        #region FirstDateTime
+
+        private DateTime _firstDateTime = new DateTime(2016, 1, 1);
+
+        public DateTime FirstDateTime
+        {
+            get => _firstDateTime;
+            set => Set(ref _firstDateTime, value);
+        }
+
+        #endregion
+
+        #region SecondDateTime
+
+        private DateTime _LastDateTime = DateTime.Now;
+
+        public DateTime LastDateTime
+        {
+            get => _LastDateTime;
+            set => Set(ref _LastDateTime, value);
+        }
+
+        #endregion
+
         #endregion
 
         #region Commands
@@ -173,10 +197,12 @@ namespace ViewModels
         public ICommand GetReportCommand { get; }
 
         public bool CanGetReportCommandExecute(object p) => (!SelectedTemplate.IsNull() && !ChoosenPersonCollection.IsNullOrEmpty());
+                
+        
 
         public void OnGetReportCommandExecuted(object p)
         {
-            SelectedTemplate.Outputing(ChoosenPersonCollection);
+            SelectedTemplate.Outputing(ChoosenPersonCollection, FirstDateTime, LastDateTime);
         }
 
         #endregion

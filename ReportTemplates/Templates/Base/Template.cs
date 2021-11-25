@@ -7,7 +7,7 @@ namespace ReportTemplates.Templates.Base
     {   
         public string Name { get; set;}
 
-        public abstract void Outputing(ObservableCollection<Person> personCollection);
+        public abstract void Outputing(ObservableCollection<Person> personCollection, DateTime firstDate, DateTime lastDate);
 
         public override string ToString()
         {

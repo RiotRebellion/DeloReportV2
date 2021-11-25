@@ -13,7 +13,7 @@ namespace ReportTemplates.Templates
     {   
         public string Name { get; set; } = "Отчёт по поручениям";
 
-        public override void Outputing(ObservableCollection<Person> personCollection)
+        public override void Outputing(ObservableCollection<Person> personCollection, DateTime firstDate, DateTime lastDate)
         {
             //TODO: Сделать функцию выгрузки в Excel
         }

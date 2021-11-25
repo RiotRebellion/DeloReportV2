@@ -32,8 +32,20 @@
                   MaxHeight="25pt"
                   ItemsSource="{Binding Templates}"
                   SelectedItem="{Binding SelectedTemplate}"/>
+        <StackPanel Height="50"
+                    Margin="5"
+                    DockPanel.Dock="Top"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <DatePicker DockPanel.Dock="Right"
+                        SelectedDate="{Binding FirstDateTime}"/>
+            <DatePicker DockPanel.Dock="Left"
+                        SelectedDate="{Binding LastDateTime}">
+            </DatePicker>
+        </StackPanel>
         <ListBox DockPanel.Dock="Top" 
-                 Margin="5" Height="420" 
+                 Margin="5"
+                 Height="360" 
                  ItemsSource="{Binding ChoosenPersonCollection}"/>
         <StackPanel Width="480" 
                     DockPanel.Dock="Top" 
