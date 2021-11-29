@@ -15,7 +15,12 @@ namespace ReportTemplates
 
         public TemplateCollection() 
         {
-            Templates.Add(new ResolutionReport());
+            Templates.Add(new ResolutionReportAllControlStateDetailed());
+            Templates.Add(new ResolutionReportOnControlStateDetailed());
+            Templates.Add(new ResolutionReportNoControlStateDetailed());
+            Templates.Add(new ResolutionReportAllControlState());
+            Templates.Add(new ResolutionReportOnControlState());
+            Templates.Add(new ResolutionReportNoControlState());
         }
 
     } 

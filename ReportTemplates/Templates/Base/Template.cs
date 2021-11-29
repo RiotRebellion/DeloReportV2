@@ -1,4 +1,5 @@
 ﻿using Delo.DAL.Entities;
+using System;
 using System.Collections.ObjectModel;
 
 namespace ReportTemplates.Templates.Base

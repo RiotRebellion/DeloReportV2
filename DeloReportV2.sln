@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delo.DAL", "Delo.DAL\Delo.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delo.Interfaces", "Delo.Interfaces\Delo.Interfaces.csproj", "{E13F701E-AE3B-4BC0-9E96-2F3BD062E7D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportTemplates", "ReportTemplates\ReportTemplates.csproj", "{16BDC2F0-29C6-40C3-A32B-A0C64DB038EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportTemplates", "ReportTemplates\ReportTemplates.csproj", "{16BDC2F0-29C6-40C3-A32B-A0C64DB038EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

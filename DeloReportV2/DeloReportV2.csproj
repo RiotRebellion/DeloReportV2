@@ -9,21 +9,21 @@
 
   <ItemGroup>
     <Compile Remove="Infrastructure\Extentions\**" />
+    <Compile Remove="Models\**" />
     <Compile Remove="Services\Base\**" />
     <Compile Remove="Services\Interfaces\**" />
     <EmbeddedResource Remove="Infrastructure\Extentions\**" />
+    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="Services\Base\**" />
     <EmbeddedResource Remove="Services\Interfaces\**" />
     <None Remove="Infrastructure\Extentions\**" />
+    <None Remove="Models\**" />
     <None Remove="Services\Base\**" />
     <None Remove="Services\Interfaces\**" />
     <Page Remove="Infrastructure\Extentions\**" />
+    <Page Remove="Models\**" />
     <Page Remove="Services\Base\**" />
     <Page Remove="Services\Interfaces\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>

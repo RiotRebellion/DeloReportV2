@@ -95,7 +95,7 @@ namespace ViewModels
 
         #region FirstDateTime
 
-        private DateTime _firstDateTime = new DateTime(2016, 1, 1);
+        private DateTime _firstDateTime = new DateTime(2021, 1, 1);
 
         public DateTime FirstDateTime
         {

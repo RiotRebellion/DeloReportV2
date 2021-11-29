@@ -30,6 +30,7 @@
         <ComboBox DockPanel.Dock="Top" 
                   Margin="5,25,5,5" 
                   MaxHeight="25pt"
+                  
                   ItemsSource="{Binding Templates}"
                   SelectedItem="{Binding SelectedTemplate}"/>
         <StackPanel Height="50"
