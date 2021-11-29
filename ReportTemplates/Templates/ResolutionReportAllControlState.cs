@@ -1,4 +1,5 @@
-﻿using Delo.DAL.Entities;
+﻿using Excel = Microsoft.Office.Interop.Excel;
+using Delo.DAL.Entities;
 using ReportTemplates.Templates.Base;
 using System.Configuration;
 using System.Data;
@@ -6,8 +7,6 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Collections.ObjectModel;
 using System;
-using OfficeOpenXml;
-using OfficeOpenXml.Table;
 
 namespace ReportTemplates.Templates
 {
@@ -17,19 +16,19 @@ namespace ReportTemplates.Templates
 
         public override void Outputing(ObservableCollection<Person> personCollection, DateTime firstDate, DateTime lastDate)
         {
-			DataSet dataSet = new DataSet();
-			string connectionString = "Data Source=172.27.100.56;Initial Catalog=DELO_DB;Persist Security Info=True;User ID=luda;Password=Mm2O6N#dE7";
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				connection.Open();
-				SqlDateTime sqlFirstDate = firstDate;
-				SqlDateTime sqlLastDate = lastDate;
+            DataSet dataSet = new DataSet();
+            string connectionString = "Data Source=172.27.100.56;Initial Catalog=DELO_DB;Persist Security Info=True;User ID=luda;Password=Mm2O6N#dE7";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlDateTime sqlFirstDate = firstDate;
+                SqlDateTime sqlLastDate = lastDate;
 
-				foreach (var person in personCollection)
-				{
-					SqlString sqlId = person.Id;
-					string query =
-					$@"USE DELO_DB
+                foreach (var person in personCollection)
+                {
+                    SqlString sqlId = person.Id;
+                    string query =
+                    $@"USE DELO_DB
 
 					DECLARE @PERSON_ID NVARCHAR(64)
 					DECLARE @FIRST_DATE DATETIME
@@ -40,7 +39,7 @@ namespace ReportTemplates.Templates
 					
 					SELECT
 					/*Имя*/
-					PERSON_NAME = (SELECT SURNAME FROM DEPARTMENT WHERE DUE = @PERSON_ID),
+					PERSON_NAME = (SELECT CLASSIF_NAME FROM DEPARTMENT WHERE DUE = @PERSON_ID),
 						
 					/*Все*/
 					ALL_COUNT = (SELECT COUNT(*) AS 'ALL' FROM RESOLUTION
@@ -84,12 +83,105 @@ namespace ReportTemplates.Templates
 											  AND ( REPLY.PLAN_DATE IS NOT NULL 
 													AND REPLY.PLAN_DATE >= GETDATE()))";
 
-					SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-					adapter.Fill(dataSet, "REPORT");
-				}
-				connection.Close();
-			}
-		}
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.Fill(dataSet, "REPORT");
+                }
+                connection.Close();
+            }
+
+            int previousRow;
+            int row = 1;
+            Excel.Range c1;
+            Excel.Range c2;
+            Excel.Range upperRow;
+            Excel.Range bottomRow;
+            Excel.Range range;
+
+            var excelApp = new Excel.Application
+            {
+                Visible = true
+            };
+            excelApp.Workbooks.Add();
+            Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+
+            //Высота столбцов
+            workSheet.Rows["1, 1"].RowHeight = 50.00;
+
+            //ширина ячеек  
+            workSheet.Columns["A:A"].ColumnWidth = 45.00;
+            workSheet.Columns["B:B"].ColumnWidth = 12.00;
+            workSheet.Columns["C:C"].ColumnWidth = 14.00;
+            workSheet.Columns["D:D"].ColumnWidth = 14.00;
+            workSheet.Columns["E:E"].ColumnWidth = 12.00;
+            workSheet.Columns["F:F"].ColumnWidth = 12.00;
+
+            //заголовок
+            workSheet.Cells[1, 1] = $@"{this.Name}  
+      {firstDate.ToString("dd MMMM yyyy")} - {lastDate.ToString("dd MMMM yyyy")}";
+
+            //Excel.Range firstHead = workSheet.Cells[1, 1];
+            //Excel.Range lastHead = workSheet.Cells[1, 6];
+            //Excel.Range headRange = workSheet.get_Range(firstHead, lastHead);
+            //headRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            //headRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+            //Перенос на другую строку
+            c1 = workSheet.Cells[row, 1];
+            c2 = workSheet.Cells[row, 6];
+            range = workSheet.get_Range(c1, c2);
+            range.WrapText = true;
+            range.Merge();
+
+            //Берем верхнюю границу выгруженных данных
+            upperRow = workSheet.Cells[1, 1];
+
+            //далее берем все данные одной строки
+            var result = from output in dataSet.Tables["REPORT"].AsEnumerable()
+                            select new
+                            {
+                                personName = output.Field<string>("PERSON_NAME"),
+                                allCount = output.Field<int>("ALL_COUNT"),
+                                executedCount = output.Field<int>("EXECUTED_COUNT"),
+                                executedLateCount = output.Field<int>("EXECUTED_LATE_COUNT"),
+                                notExecutedCount = output.Field<int>("NOT_EXECUTED_COUNT"),
+                                deadlineIsNotCount = output.Field<int>("DEADLINE_IS_NOT_COUNT")
+                            };
+            //сохраняем первую строку с номенклатурами отдела
+            previousRow = row + 1;
+
+            row++;
+            workSheet.Cells[row, 1] = "Сотрудник - должность";
+            workSheet.Cells[row, 2] = "Всего поручений";
+            workSheet.Cells[row, 3] = "Исполнено поручений";
+            workSheet.Cells[row, 4] = "Исполнено с опозданием";
+            workSheet.Cells[row, 5] = "Не исполнено";
+            workSheet.Cells[row, 6] = "Срок не наступил";
+
+            //заполняем содержание
+            var j = 0;
+            foreach (var info in result)
+            {
+                row++;
+                workSheet.Cells[row, 1] = (string)info.personName;                    
+                workSheet.Cells[row, 2] = (int)info.allCount;
+                workSheet.Cells[row, 3] = (int)info.executedCount;
+                workSheet.Cells[row, 4] = (int)info.executedLateCount;
+                workSheet.Cells[row, 5] = (int)info.notExecutedCount;
+                workSheet.Cells[row, 6] = (int)info.deadlineIsNotCount;
+            }
+
+            bottomRow = workSheet.Cells[row, 6];
+            range = workSheet.get_Range(upperRow, bottomRow);
+            range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            range.WrapText = true;
+            range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeBottom).LineStyle = Excel.XlLineStyle.xlContinuous;
+            range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeRight).LineStyle = Excel.XlLineStyle.xlContinuous;
+            range.Borders.get_Item(Excel.XlBordersIndex.xlInsideHorizontal).LineStyle = Excel.XlLineStyle.xlContinuous;
+            range.Borders.get_Item(Excel.XlBordersIndex.xlInsideVertical).LineStyle = Excel.XlLineStyle.xlContinuous;
+            range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
+            
+        }
 
         public override string ToString()
         {
