@@ -54,7 +54,7 @@ namespace ReportTemplates.Templates
 				                      AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 				                      AND RESOLUTION.CONTROL_STATE IS NULL
 				                      AND	(reply.UPD_DATE is not null
-						                     and (reply.PLAN_DATE is null OR CONVERT(VARCHAR, reply.UPD_DATE, 102) <= CONVERT(VARCHAR, REPLY.PLAN_DATE, 102))		 
+						                     and (RESOLUTION.PLAN_DATE is null OR CONVERT(VARCHAR, reply.UPD_DATE, 102) <= CONVERT(VARCHAR, RESOLUTION.PLAN_DATE, 102))		 
 						                    )),
 
                     /*ОТВЕТЫ С ОПОЗДАНИЕМ*/ 
@@ -64,8 +64,8 @@ namespace ReportTemplates.Templates
 						                      AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 						                      AND RESOLUTION.CONTROL_STATE IS NULL
 						                      AND ( REPLY.UPD_DATE IS NOT NULL 
-								                    AND REPLY.PLAN_DATE IS NOT NULL 
-								                    AND CONVERT(VARCHAR, REPLY.UPD_DATE, 102) > CONVERT(varchar, REPLY.PLAN_DATE, 102))),
+								                    AND RESOLUTION.PLAN_DATE IS NOT NULL 
+								                    AND CONVERT(VARCHAR, REPLY.UPD_DATE, 102) > CONVERT(varchar, RESOLUTION.PLAN_DATE, 102))),
 
                     /*НЕ ИСПОЛНЕНО*/
                     NOT_EXECUTED_COUNT = (SELECT COUNT(*) AS 'НЕ ИСПОЛНЕНО' FROM RESOLUTION
@@ -74,7 +74,7 @@ namespace ReportTemplates.Templates
 						                      AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 						                      AND RESOLUTION.CONTROL_STATE IS NULL
 						                      AND REPLY.UPD_DATE IS NULL
-						                      AND (REPLY.PLAN_DATE IS NULL OR REPLY.PLAN_DATE < GETDATE())),
+						                      AND (RESOLUTION.PLAN_DATE IS NULL OR RESOLUTION.PLAN_DATE < GETDATE())),
 
                     /*СРОК НЕ НАСТУПИЛ*/
                     DEADLINE_IS_NOT_COUNT = (SELECT COUNT(*) AS 'СРОК НЕ НАСТУПИЛ' FROM RESOLUTION
@@ -83,8 +83,8 @@ namespace ReportTemplates.Templates
 						                      AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 						                      AND RESOLUTION.CONTROL_STATE IS NULL
 						                      AND REPLY.UPD_DATE IS NULL
-						                      AND ( REPLY.PLAN_DATE IS NOT NULL 
-								                    AND REPLY.PLAN_DATE >= GETDATE()))";
+						                      AND ( RESOLUTION.PLAN_DATE IS NOT NULL 
+								                    AND RESOLUTION.PLAN_DATE >= GETDATE()))";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     adapter.Fill(dataSet, "REPORT");

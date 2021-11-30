@@ -53,8 +53,8 @@ namespace ReportTemplates.Templates
 										  where REPLY.DUE = @PERSON_ID 
 										  AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE and @LAST_DATE
 										  AND	(REPLY.UPD_DATE IS NOT NULL
-												 AND (reply.PLAN_DATE IS NULL 
-												 OR CONVERT(VARCHAR, reply.UPD_DATE, 102) <= CONVERT(VARCHAR, REPLY.PLAN_DATE, 102))		 
+												 AND (RESOLUTION.PLAN_DATE IS NULL 
+												 OR CONVERT(VARCHAR, reply.UPD_DATE, 102) <= CONVERT(VARCHAR, RESOLUTION.PLAN_DATE, 102))		 
 												 )),
 
 					/*ОТВЕТЫ С ОПОЗДАНИЕМ*/ 
@@ -63,8 +63,8 @@ namespace ReportTemplates.Templates
 											  where REPLY.DUE = @PERSON_ID 
 											  AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 											  AND ( REPLY.UPD_DATE IS NOT NULL 
-													AND REPLY.PLAN_DATE IS NOT NULL 
-													AND CONVERT(VARCHAR, REPLY.UPD_DATE, 102) > CONVERT(varchar, REPLY.PLAN_DATE, 102))),
+													AND RESOLUTION.PLAN_DATE IS NOT NULL 
+													AND CONVERT(VARCHAR, REPLY.UPD_DATE, 102) > CONVERT(varchar, RESOLUTION.PLAN_DATE, 102))),
 
 					/*НЕ ИСПОЛНЕНО*/
 					NOT_EXECUTED_COUNT = (SELECT COUNT(*) AS 'NOT_EXECUTED' FROM RESOLUTION
@@ -72,7 +72,7 @@ namespace ReportTemplates.Templates
 											  where REPLY.DUE = @PERSON_ID 
 											  AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 											  AND REPLY.UPD_DATE IS NULL
-											  AND (REPLY.PLAN_DATE IS NULL OR REPLY.PLAN_DATE < GETDATE())),
+											  AND (RESOLUTION.PLAN_DATE IS NULL OR RESOLUTION.PLAN_DATE < GETDATE())),
 
 					/*СРОК НЕ НАСТУПИЛ*/
 					DEADLINE_IS_NOT_COUNT = (SELECT COUNT(*) AS 'DEADLINE_IS_NOT' FROM RESOLUTION
@@ -80,8 +80,8 @@ namespace ReportTemplates.Templates
 											  where REPLY.DUE = @PERSON_ID 
 											  AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
 											  AND REPLY.UPD_DATE IS NULL
-											  AND ( REPLY.PLAN_DATE IS NOT NULL 
-													AND REPLY.PLAN_DATE >= GETDATE()))";
+											  AND ( RESOLUTION.PLAN_DATE IS NOT NULL 
+													AND RESOLUTION.PLAN_DATE >= GETDATE()))";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     adapter.Fill(dataSet, "REPORT");
