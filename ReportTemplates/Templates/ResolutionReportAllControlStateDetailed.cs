@@ -37,7 +37,7 @@ namespace ReportTemplates.Templates
                     $@"
                     USE DELO_DB
                     /*Все*/
-                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.UPD_DATE AS 'UPD_DATE' FROM RESOLUTION
+                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.REPLY_DATE AS 'WRITED_DATE', REPLY.UPD_DATE AS 'FACT_DATE' FROM RESOLUTION
                     FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
                     FULL JOIN DOC_RC ON RESOLUTION.ISN_REF_DOC = DOC_RC.ISN_DOC
                     FULL JOIN DEPARTMENT ON REPLY.DUE = DEPARTMENT.DUE
@@ -48,7 +48,7 @@ namespace ReportTemplates.Templates
                     $@"
                     USE DELO_DB
                     /*Исполнено*/
-                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.UPD_DATE AS 'UPD_DATE' FROM RESOLUTION
+                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.REPLY_DATE AS 'WRITED_DATE', REPLY.UPD_DATE AS 'FACT_DATE' FROM RESOLUTION
                     FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
                     FULL JOIN DOC_RC ON RESOLUTION.ISN_REF_DOC = DOC_RC.ISN_DOC
                     FULL JOIN DEPARTMENT ON REPLY.DUE = DEPARTMENT.DUE
@@ -62,7 +62,7 @@ namespace ReportTemplates.Templates
                     $@"
                     USE DELO_DB
                     /*ОТВЕТЫ С ОПОЗДАНИЕМ*/ 
-                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.UPD_DATE AS 'UPD_DATE' FROM RESOLUTION
+                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.REPLY_DATE AS 'WRITED_DATE', REPLY.UPD_DATE AS 'FACT_DATE' FROM RESOLUTION                   
                     FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
                     FULL JOIN DOC_RC ON RESOLUTION.ISN_REF_DOC = DOC_RC.ISN_DOC
                     FULL JOIN DEPARTMENT ON REPLY.DUE = DEPARTMENT.DUE
@@ -76,7 +76,7 @@ namespace ReportTemplates.Templates
                     $@"
                     USE DELO_DB
                     /*НЕ ИСПОЛНЕНО*/
-                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.UPD_DATE AS 'UPD_DATE' FROM RESOLUTION
+                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.REPLY_DATE AS 'WRITED_DATE', REPLY.UPD_DATE AS 'FACT_DATE' FROM RESOLUTION                   
                     FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
                     FULL JOIN DOC_RC ON RESOLUTION.ISN_REF_DOC = DOC_RC.ISN_DOC
                     FULL JOIN DEPARTMENT ON REPLY.DUE = DEPARTMENT.DUE 
@@ -89,7 +89,7 @@ namespace ReportTemplates.Templates
                     $@"
                     USE DELO_DB
                     /*СРОК НЕ НАСТУПИЛ*/
-                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.UPD_DATE AS 'UPD_DATE' FROM RESOLUTION
+                    SELECT DEPARTMENT.CLASSIF_NAME AS 'PERSON', DOC_RC.FREE_NUM AS 'DOCNUM', RESOLUTION.RESOLUTION_TEXT AS 'RESOLUTION_TEXT', RESOLUTION.PLAN_DATE AS 'PLAN', REPLY.REPLY_TEXT AS 'REPLY_TEXT', REPLY.REPLY_DATE AS 'WRITED_DATE', REPLY.UPD_DATE AS 'FACT_DATE' FROM RESOLUTION                    
                     FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
                     FULL JOIN DOC_RC ON RESOLUTION.ISN_REF_DOC = DOC_RC.ISN_DOC
                     FULL JOIN DEPARTMENT ON REPLY.DUE = DEPARTMENT.DUE
@@ -180,7 +180,10 @@ namespace ReportTemplates.Templates
                                     {
                                         docNum = output.Field<string>("DOCNUM") ?? "",
                                         resolutionText = output.Field<string>("RESOLUTION_TEXT") ?? "",
+                                        resolutionPlan = output.Field<DateTime?>("PLAN").ToString() ?? "",
                                         replyText = output.Field<string>("REPLY_TEXT") ?? "",
+                                        writedDate = output.Field<DateTime?>("WRITED_DATE").ToString() ?? "",
+                                        factDate = output.Field<DateTime?>("FACT_DATE").ToString() ?? ""
                                     };
 
                 var executedDocs = from output in dataSet.Tables["EXECUTED_DOCS"].AsEnumerable()
@@ -189,7 +192,10 @@ namespace ReportTemplates.Templates
                                     {
                                         docNum = output.Field<string>("DOCNUM") ?? "",
                                         resolutionText = output.Field<string>("RESOLUTION_TEXT") ?? "",
+                                        resolutionPlan = output.Field<DateTime?>("PLAN").ToString() ?? "",
                                         replyText = output.Field<string>("REPLY_TEXT") ?? "",
+                                        writedDate = output.Field<DateTime?>("WRITED_DATE").ToString() ?? "",
+                                        factDate = output.Field<DateTime?>("FACT_DATE").ToString() ?? ""
                                     };
 
                 var executedLateDocs = from output in dataSet.Tables["EXECUTED_LATE_DOCS"].AsEnumerable()
@@ -198,7 +204,10 @@ namespace ReportTemplates.Templates
                                         {
                                             docNum = output.Field<string>("DOCNUM") ?? "",
                                             resolutionText = output.Field<string>("RESOLUTION_TEXT") ?? "",
+                                            resolutionPlan = output.Field<DateTime?>("PLAN").ToString() ?? "",
                                             replyText = output.Field<string>("REPLY_TEXT") ?? "",
+                                            writedDate = output.Field<DateTime?>("WRITED_DATE").ToString() ?? "",
+                                            factDate = output.Field<DateTime?>("FACT_DATE").ToString() ?? ""
                                         };
 
                 var notExecutedDocs = from output in dataSet.Tables["NOT_EXECUTED_DOCS"].AsEnumerable()
@@ -207,7 +216,10 @@ namespace ReportTemplates.Templates
                                         {
                                             docNum = output.Field<string>("DOCNUM") ?? "",
                                             resolutionText = output.Field<string>("RESOLUTION_TEXT") ?? "",
+                                            resolutionPlan = output.Field<DateTime?>("PLAN").ToString() ?? "",
                                             replyText = output.Field<string>("REPLY_TEXT") ?? "",
+                                            writedDate = output.Field<DateTime?>("WRITED_DATE").ToString() ?? "",
+                                            factDate = output.Field<DateTime?>("FACT_DATE").ToString() ?? ""
                                         };
 
                 var deadlineIsNotDocs = from output in dataSet.Tables["DEADLINE_IS_NOT"].AsEnumerable()
@@ -216,13 +228,16 @@ namespace ReportTemplates.Templates
                                         {
                                             docNum = output.Field<string>("DOCNUM") ?? "",
                                             resolutionText = output.Field<string>("RESOLUTION_TEXT") ?? "",
+                                            resolutionPlan = output.Field<DateTime?>("PLAN").ToString() ?? "",
                                             replyText = output.Field<string>("REPLY_TEXT") ?? "",
+                                            writedDate = output.Field<DateTime?>("WRITED_DATE").ToString() ?? "",
+                                            factDate = output.Field<DateTime?>("FACT_DATE").ToString() ?? ""
                                         };
 
                 //все
                 //формирование строки типа документа
                 c1 = workSheet.Cells[row, 1];
-                c2 = workSheet.Cells[row, 3];
+                c2 = workSheet.Cells[row, 6];
                 range = workSheet.get_Range(c1, c2);
                 range.WrapText = true;
                 range.Merge();
@@ -234,23 +249,30 @@ namespace ReportTemplates.Templates
 
                 workSheet.Cells[row, 1] = "№";
                 workSheet.Cells[row, 2] = "Текст поручения";
-                workSheet.Cells[row, 3] = "Текст отчёта";
+                workSheet.Cells[row, 3] = "Дата поручения";
+                workSheet.Cells[row, 4] = "Текст отчёта";
+                workSheet.Cells[row, 5] = "Дата в отчёте";
+                workSheet.Cells[row, 6] = "Дата в системе";
+
+                row++;
 
                 foreach (var item in allDocs)
                 {
                     workSheet.Cells[row, 1] = (string)item.docNum;
                     workSheet.Cells[row, 2] = (string)item.resolutionText;
-                    workSheet.Cells[row, 3] = (string)item.replyText;
+                    workSheet.Cells[row, 3] = (string)item.resolutionPlan;
+                    workSheet.Cells[row, 4] = (string)item.replyText;
+                    workSheet.Cells[row, 5] = (string)item.writedDate;
+                    workSheet.Cells[row, 6] = (string)item.factDate;
                     row++;
                 }
 
-                row++;
-                row++;
+                row += 2;
 
                 //исполненные
                 //формирование строки типа документа
                 c1 = workSheet.Cells[row, 1];
-                c2 = workSheet.Cells[row, 3];
+                c2 = workSheet.Cells[row, 6];
                 range = workSheet.get_Range(c1, c2);
                 range.WrapText = true;
                 range.Merge();
@@ -262,23 +284,30 @@ namespace ReportTemplates.Templates
 
                 workSheet.Cells[row, 1] = "№";
                 workSheet.Cells[row, 2] = "Текст поручения";
-                workSheet.Cells[row, 3] = "Текст отчёта";
+                workSheet.Cells[row, 3] = "Дата поручения";
+                workSheet.Cells[row, 4] = "Текст отчёта";
+                workSheet.Cells[row, 5] = "Дата в отчёте";
+                workSheet.Cells[row, 6] = "Дата в системе";
+
+                row++;
 
                 foreach (var item in executedDocs)
                 {
                     workSheet.Cells[row, 1] = (string)item.docNum;
                     workSheet.Cells[row, 2] = (string)item.resolutionText;
-                    workSheet.Cells[row, 3] = (string)item.replyText;
+                    workSheet.Cells[row, 3] = (string)item.resolutionPlan;
+                    workSheet.Cells[row, 4] = (string)item.replyText;
+                    workSheet.Cells[row, 5] = (string)item.writedDate;
+                    workSheet.Cells[row, 6] = (string)item.factDate;
                     row++;
                 }
 
-                row++;
-                row++;
+                row += 2;
 
                 //исполненные с опозданием
                 //формирование строки типа документа
                 c1 = workSheet.Cells[row, 1];
-                c2 = workSheet.Cells[row, 3];
+                c2 = workSheet.Cells[row, 6];
                 range = workSheet.get_Range(c1, c2);
                 range.WrapText = true;
                 range.Merge();
@@ -290,23 +319,30 @@ namespace ReportTemplates.Templates
 
                 workSheet.Cells[row, 1] = "№";
                 workSheet.Cells[row, 2] = "Текст поручения";
-                workSheet.Cells[row, 3] = "Текст отчёта";
+                workSheet.Cells[row, 3] = "Дата поручения";
+                workSheet.Cells[row, 4] = "Текст отчёта";
+                workSheet.Cells[row, 5] = "Дата в отчёте";
+                workSheet.Cells[row, 6] = "Дата в системе";
+
+                row++;
 
                 foreach (var item in executedLateDocs)
                 {
                     workSheet.Cells[row, 1] = (string)item.docNum;
                     workSheet.Cells[row, 2] = (string)item.resolutionText;
-                    workSheet.Cells[row, 3] = (string)item.replyText;
+                    workSheet.Cells[row, 3] = (string)item.resolutionPlan;
+                    workSheet.Cells[row, 4] = (string)item.replyText;
+                    workSheet.Cells[row, 5] = (string)item.writedDate;
+                    workSheet.Cells[row, 6] = (string)item.factDate;
                     row++;
                 }
 
-                row++;
-                row++;
+                row += 2;
 
                 //не исполненные
                 //формирование строки типа документа
                 c1 = workSheet.Cells[row, 1];
-                c2 = workSheet.Cells[row, 3];
+                c2 = workSheet.Cells[row, 6];
                 range = workSheet.get_Range(c1, c2);
                 range.WrapText = true;
                 range.Merge();
@@ -318,23 +354,30 @@ namespace ReportTemplates.Templates
 
                 workSheet.Cells[row, 1] = "№";
                 workSheet.Cells[row, 2] = "Текст поручения";
-                workSheet.Cells[row, 3] = "Текст отчёта";
+                workSheet.Cells[row, 3] = "Дата поручения";
+                workSheet.Cells[row, 4] = "Текст отчёта";
+                workSheet.Cells[row, 5] = "Дата в отчёте";
+                workSheet.Cells[row, 6] = "Дата в системе";
+
+                row++;
 
                 foreach (var item in notExecutedDocs)
                 {
                     workSheet.Cells[row, 1] = (string)item.docNum;
                     workSheet.Cells[row, 2] = (string)item.resolutionText;
-                    workSheet.Cells[row, 3] = (string)item.replyText;
+                    workSheet.Cells[row, 3] = (string)item.resolutionPlan;
+                    workSheet.Cells[row, 4] = (string)item.replyText;
+                    workSheet.Cells[row, 5] = (string)item.writedDate;
+                    workSheet.Cells[row, 6] = (string)item.factDate;
                     row++;
                 }
 
-                row++;
-                row++;
+                row += 2;
 
                 //Срок не наступил
                 //формирование строки типа документа
                 c1 = workSheet.Cells[row, 1];
-                c2 = workSheet.Cells[row, 3];
+                c2 = workSheet.Cells[row, 6];
                 range = workSheet.get_Range(c1, c2);
                 range.WrapText = true;
                 range.Merge();
@@ -342,22 +385,30 @@ namespace ReportTemplates.Templates
                 range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
 
                 workSheet.Cells[row, 1] = "не наступил";
-                row++;
+                row += 2;
 
                 workSheet.Cells[row, 1] = "№";
                 workSheet.Cells[row, 2] = "Текст поручения";
-                workSheet.Cells[row, 3] = "Текст отчёта";
+                workSheet.Cells[row, 3] = "Дата поручения";
+                workSheet.Cells[row, 4] = "Текст отчёта";
+                workSheet.Cells[row, 5] = "Дата в отчёте";
+                workSheet.Cells[row, 6] = "Дата в системе";
+
+                row++;
 
                 foreach (var item in deadlineIsNotDocs)
                 {
                     workSheet.Cells[row, 1] = (string)item.docNum;
                     workSheet.Cells[row, 2] = (string)item.resolutionText;
-                    workSheet.Cells[row, 3] = (string)item.replyText;
+                    workSheet.Cells[row, 3] = (string)item.resolutionPlan;
+                    workSheet.Cells[row, 4] = (string)item.replyText;
+                    workSheet.Cells[row, 5] = (string)item.writedDate;
+                    workSheet.Cells[row, 6] = (string)item.factDate;
                     row++;
                 }
             }
 
-            bottomRow = workSheet.Cells[row, 3];
+            bottomRow = workSheet.Cells[row, 6];
             range = workSheet.get_Range(upperRow, bottomRow);
             range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
