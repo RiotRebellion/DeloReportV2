@@ -6,8 +6,10 @@ using ReportTemplates.Templates.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using ViewModels.Base;
 
@@ -65,6 +67,17 @@ namespace ViewModels
 
         #endregion
 
+        #region PersonSourceCollection
+
+        private CollectionViewSource personSourceCollection;
+
+        public ICollectionView PersonSourceCollection
+        {
+            get => this.personSourceCollection.View;
+        }
+
+        #endregion
+
         #region SelectedPerson
 
         public Person SelectedPerson { get; set; }
@@ -113,6 +126,23 @@ namespace ViewModels
         {
             get => _LastDateTime;
             set => Set(ref _LastDateTime, value);
+        }
+
+        #endregion
+
+        #region FilterText
+
+        private string _filterText;
+
+        public string FilterText
+        {
+            get => _filterText;
+            set 
+            {
+                Set(ref _filterText, value);
+                this.personSourceCollection.View.Refresh();
+                
+            } 
         }
 
         #endregion
@@ -207,15 +237,64 @@ namespace ViewModels
 
         #endregion
 
+        #region ClearFilterCommand
+
+        public ICommand ClearFilterCommand { get; }
+
+        public bool CanClearFilterCommandExecute(object p) => !FilterText.IsNullOrEmpty();
+
+        public void OnClearFilterCommandExecuted(object p)
+        {
+            FilterText = "";
+        }
+
+        #endregion
+
+        #endregion
+
+        #region EventHandlers
+
+        #region PersonCollectionView_Filter
+
+        void PersonCollectionView_Filter(object sender, FilterEventArgs e)
+        {
+            if (string.IsNullOrEmpty(FilterText))
+            {
+                e.Accepted = true;
+                return;
+            }
+
+            Person usr = e.Item as Person;
+            if (usr.Name.ToUpper().Contains(FilterText.ToUpper()))
+            {
+                e.Accepted = true;
+            }
+            else
+            {
+                e.Accepted = false;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Constructor - MainWindowViewModel
 
         public MainWindowViewModel(IRepository<Person> personRepository)
         {
+
             _personRepository = personRepository;
             TemplateCollection _templateCollection = new TemplateCollection();
             _templates = _templateCollection.Templates;
+
+            #region SourceCollection
+
+            personSourceCollection = new CollectionViewSource();
+            personSourceCollection.Source = PersonCollection;
+            personSourceCollection.Filter += PersonCollectionView_Filter;
+
+            #endregion
 
             #region Commands
 
@@ -230,6 +309,8 @@ namespace ViewModels
             ClearChoosenPersonListCommand = new RelayCommand(OnClearChoosenPersonListCommandExecuted, CanClearChoosenPersonListCommandExecute);
 
             GetReportCommand = new RelayCommand(OnGetReportCommandExecuted, CanGetReportCommandExecute);
+
+            ClearFilterCommand = new RelayCommand(OnClearFilterCommandExecuted, CanClearFilterCommandExecute);
 
             #endregion
 

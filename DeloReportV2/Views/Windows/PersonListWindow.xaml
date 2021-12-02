@@ -11,7 +11,7 @@
         Title="Редактирование списка" 
         Height="640" 
         Width="480" 
-        ResizeMode="NoResize">
+        ResizeMode="NoResize" Icon="/Views/Windows/amogus.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,13 +20,13 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
-        <ListBox DockPanel.Dock="Top"
+        <ListView DockPanel.Dock="Top"
                  Height="280"
                  Margin="5" 
                  SelectionMode="Single"
                  SelectedItem="{Binding SelectedPerson}" 
-                 ItemsSource="{Binding PersonCollection}">
-        </ListBox>
+                 ItemsSource="{Binding PersonSourceCollection}">
+        </ListView>
         <StackPanel DockPanel.Dock="Top" 
                     Orientation="Horizontal" 
                     Height="35" Margin="5" 
@@ -45,14 +45,35 @@
                     Content="Очистить список" 
                     Width="Auto" 
                     Style="{DynamicResource ListOperationButton}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="240" 
+                         Padding="5"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                </TextBox>
+                <Button Width="15"
+                        Height="15"
+                        Padding="0"
+                        BorderThickness="0"
+                        BorderBrush="White"
+                        Command="{Binding ClearFilterCommand}">
+                    <fa:FontAwesome Height="15"
+                                    Width="15"
+                                    Icon="Close" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" 
+                                    Background="White" 
+                                    Foreground="Red">
+                    </fa:FontAwesome>
+                </Button>
+            </StackPanel>
         </StackPanel>
-        <ListBox DockPanel.Dock="Top" 
+        <ListView DockPanel.Dock="Top" 
                  Height="200" 
                  Margin="5" 
                  SelectionMode="Multiple" 
                  SelectedItem="{Binding SelectedPerson}" 
                  ItemsSource="{Binding ChoosenPersonCollection}">
-        </ListBox>
+        </ListView>
         <StackPanel DockPanel.Dock="Top" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center">

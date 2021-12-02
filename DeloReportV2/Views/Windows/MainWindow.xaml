@@ -12,7 +12,7 @@
     Height="640" 
     Width="480"
     mc:Ignorable="d"
-    ResizeMode="NoResize">
+    ResizeMode="NoResize" Icon="/Views/Windows/amogus.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -24,7 +24,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Программа">
                 <MenuItem Header="Настройки"/>
-                <MenuItem Header="Выход" Command="{Binding OnCloseApplication}"/>
+                <MenuItem Header="Выход"/>
             </MenuItem>
         </Menu>
         <ComboBox DockPanel.Dock="Top" 
@@ -44,7 +44,7 @@
                         SelectedDate="{Binding LastDateTime}">
             </DatePicker>
         </StackPanel>
-        <ListBox DockPanel.Dock="Top" 
+        <ListView DockPanel.Dock="Top" 
                  Margin="5"
                  Height="360" 
                  ItemsSource="{Binding ChoosenPersonCollection}"/>

@@ -57,6 +57,18 @@ namespace ReportTemplates.Templates
 						                     and (RESOLUTION.PLAN_DATE is null OR CONVERT(VARCHAR, reply.UPD_DATE, 102) <= CONVERT(VARCHAR, RESOLUTION.PLAN_DATE, 102))		 
 						                    )),
 
+                    /*исполнены с измененной датой*/
+                    EXECUTED_WITH_CHANGED_DATE = (SELECT COUNT(*) from RESOLUTION
+							                    FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
+							                    FULL JOIN DOC_RC ON RESOLUTION.ISN_REF_DOC = DOC_RC.ISN_DOC
+							                    FULL JOIN DEPARTMENT ON REPLY.DUE = DEPARTMENT.DUE
+							                      where REPLY.DUE = @PERSON_ID 
+							                      AND RESOLUTION.RESOLUTION_DATE BETWEEN @FIRST_DATE AND @LAST_DATE
+                                                  AND RESOLUTION.CONTROL_STATE IS NULL
+							                      AND ( REPLY.UPD_DATE IS NOT NULL 
+									                    AND CONVERT(VARCHAR, REPLY.UPD_DATE, 102) > CONVERT(varchar, RESOLUTION.PLAN_DATE, 102)
+									                    AND CONVERT(VARCHAR, REPLY.REPLY_DATE, 102) != CONVERT(VARCHAR, REPLY.UPD_DATE, 102))),
+
                     /*ОТВЕТЫ С ОПОЗДАНИЕМ*/ 
                     EXECUTED_LATE_COUNT = (SELECT COUNT(*) AS 'С опозданием' FROM RESOLUTION
 						                    FULL JOIN REPLY ON RESOLUTION.ISN_RESOLUTION = REPLY.ISN_RESOLUTION
@@ -105,7 +117,7 @@ namespace ReportTemplates.Templates
                 Visible = true
             };
             excelApp.Workbooks.Add();
-            Microsoft.Office.Interop.Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+            Excel._Worksheet workSheet = (Excel.Worksheet)excelApp.ActiveSheet;
 
             //Высота столбцов
             workSheet.Rows["1, 1"].RowHeight = 50.00;
@@ -117,16 +129,11 @@ namespace ReportTemplates.Templates
             workSheet.Columns["D:D"].ColumnWidth = 14.00;
             workSheet.Columns["E:E"].ColumnWidth = 12.00;
             workSheet.Columns["F:F"].ColumnWidth = 12.00;
+            workSheet.Columns["G:G"].ColumnWidth = 14.00;
 
             //заголовок
             workSheet.Cells[1, 1] = $@"{this.Name}  
       {firstDate.ToString("dd MMMM yyyy")} - {lastDate.ToString("dd MMMM yyyy")}";
-
-            //Excel.Range firstHead = workSheet.Cells[1, 1];
-            //Excel.Range lastHead = workSheet.Cells[1, 6];
-            //Excel.Range headRange = workSheet.get_Range(firstHead, lastHead);
-            //headRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            //headRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
 
             //Перенос на другую строку
             c1 = workSheet.Cells[row, 1];
@@ -145,6 +152,7 @@ namespace ReportTemplates.Templates
                              personName = output.Field<string>("PERSON_NAME"),
                              allCount = output.Field<int>("ALL_COUNT"),
                              executedCount = output.Field<int>("EXECUTED_COUNT"),
+                             executedWithChangedDateCount = output.Field<int>("EXECUTED_WITH_CHANGED_DATE"),
                              executedLateCount = output.Field<int>("EXECUTED_LATE_COUNT"),
                              notExecutedCount = output.Field<int>("NOT_EXECUTED_COUNT"),
                              deadlineIsNotCount = output.Field<int>("DEADLINE_IS_NOT_COUNT")
@@ -156,9 +164,10 @@ namespace ReportTemplates.Templates
             workSheet.Cells[row, 1] = "Сотрудник - должность";
             workSheet.Cells[row, 2] = "Всего поручений";
             workSheet.Cells[row, 3] = "Исполнено поручений";
-            workSheet.Cells[row, 4] = "Исполнено с опозданием";
-            workSheet.Cells[row, 5] = "Не исполнено";
-            workSheet.Cells[row, 6] = "Срок не наступил";
+            workSheet.Cells[row, 4] = "Исполнено с изменением даты";
+            workSheet.Cells[row, 5] = "Исполнено с опозданием";
+            workSheet.Cells[row, 6] = "Не исполнено";
+            workSheet.Cells[row, 7] = "Срок не наступил";
 
             //заполняем содержание
             var j = 0;
@@ -168,12 +177,13 @@ namespace ReportTemplates.Templates
                 workSheet.Cells[row, 1] = (string)info.personName;
                 workSheet.Cells[row, 2] = (int)info.allCount;
                 workSheet.Cells[row, 3] = (int)info.executedCount;
-                workSheet.Cells[row, 4] = (int)info.executedLateCount;
-                workSheet.Cells[row, 5] = (int)info.notExecutedCount;
-                workSheet.Cells[row, 6] = (int)info.deadlineIsNotCount;
+                workSheet.Cells[row, 4] = (int)info.executedWithChangedDateCount;
+                workSheet.Cells[row, 5] = (int)info.executedLateCount - (int)info.executedWithChangedDateCount;
+                workSheet.Cells[row, 6] = (int)info.notExecutedCount;
+                workSheet.Cells[row, 7] = (int)info.deadlineIsNotCount;
             }
 
-            bottomRow = workSheet.Cells[row, 6];
+            bottomRow = workSheet.Cells[row, 7];
             range = workSheet.get_Range(upperRow, bottomRow);
             range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;

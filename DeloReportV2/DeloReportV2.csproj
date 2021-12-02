@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>amogus.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,15 @@
     <Page Remove="Models\**" />
     <Page Remove="Services\Base\**" />
     <Page Remove="Services\Interfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Windows\amogus.ico" />
+    <None Remove="Views\Windows\box_8064_0_1.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="amogus.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +62,14 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Windows\amogus.ico" />
   </ItemGroup>
 
 </Project>
