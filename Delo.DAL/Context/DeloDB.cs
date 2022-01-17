@@ -15,7 +15,7 @@ namespace Delo.DAL.Context
 
         public DeloDB(DbContextOptions<DeloDB> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
     }
 }
